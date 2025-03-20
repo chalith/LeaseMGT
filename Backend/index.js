@@ -1,8 +1,12 @@
 const express = require("express");
+const fs = require("fs");
 const LeaseService = require("./service");
 const initEnv = require("./Environment");
+const multer = require("multer");
 const app = express();
 const port = 8080;
+
+const uploadDirectory = "./data/uploads";
 
 initEnv();
 
@@ -74,6 +78,47 @@ app.get("/api/leases", (req, res) => {
     res.json(result);
   } catch (error) {
     res.status(404).json({ message: error.message });
+  }
+});
+
+// Download all Leases to a file
+// Request: GET /api/download-leases
+// Response: 200 OK
+// File download
+app.get("/api/download-leases", (req, res) => {
+  try {
+    const leases = leaseService.getAllLeases();
+    const filePath = "./leases.json";
+    fs.writeFileSync(filePath, JSON.stringify(leases, null, 2));
+    res.download(filePath, "leases.json", (err) => {
+      if (err) {
+        res.status(500).json({ message: "Error downloading the file" });
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Upload a file with leases
+// Request: PUT /api/upload-leases
+// Form data: file
+// Response: 200 OK
+const upload = multer({ dest: uploadDirectory });
+app.put("/api/upload-leases", upload.single("file"), (req, res) => {
+  if (!req.file) {
+    res.status(400).json({ message: "File is required" });
+    return;
+  }
+
+  try {
+    const filePath = req.file.path;
+    const fileContent = fs.readFileSync(filePath, "utf8");
+    const leases = JSON.parse(fileContent);
+    leaseService.updateAllLeases(leases);
+    res.json({ message: "Leases have been uploaded and updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

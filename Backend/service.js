@@ -36,12 +36,21 @@ class LeaseService {
     fs.writeFileSync(leaseOrdersFilePath, JSON.stringify(this.leaseOrders, null, 2));
   }
 
+  #persistLeases() {
+    fs.writeFileSync(leasesFilePath, JSON.stringify(this.leases, null, 2));
+  }
+
   async createMetadata(leaseOrder, leases) {
     await MetadataHelper.saveMetadata(leaseOrder, leases);
   }
 
   getMetadata(reference) {
     return MetadataHelper.getMetadata(reference);
+  }
+
+  updateAllLeases(updatedLeases) {
+    this.leases = updatedLeases;
+    this.#persistLeases();
   }
 
   getAllLeases() {
