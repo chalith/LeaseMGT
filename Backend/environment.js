@@ -1,20 +1,24 @@
-import * as fs from "fs";
+const fs = require("fs");
 
-const res = fs.readFileSync(".env", "utf8");
+function initEnv() {
+  const res = fs.existsSync(".env.development.local") ? fs.readFileSync(".env.development.local", "utf8") : fs.readFileSync(".env", "utf8");
 
-let env = {};
+  let env = {};
 
-res.split("\n").forEach((line) => {
-  const [key, value] = line.split("=");
-  const val = line.replace(`${key}=`, "");
-  if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
-    env[key] = val.slice(1, -1);
-  } else {
-    env[key] = parseInt(val);
-    if (isNaN(env[key])) {
-      env[key] = val;
+  res.split("\n").forEach((line) => {
+    const [key, value] = line.split("=");
+    const val = line.replace(`${key}=`, "");
+    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+      env[key] = val.slice(1, -1);
+    } else {
+      env[key] = parseInt(val);
+      if (isNaN(env[key])) {
+        env[key] = val;
+      }
     }
-  }
-});
+  });
 
-module.exports = env;
+  process.env = { ...process.env, ...env };
+}
+
+module.exports = initEnv;

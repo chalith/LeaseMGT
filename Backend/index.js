@@ -1,7 +1,10 @@
 const express = require("express");
 const LeaseService = require("./service");
+const initEnv = require("./Environment");
 const app = express();
 const port = 8080;
+
+initEnv();
 
 const leaseService = new LeaseService();
 

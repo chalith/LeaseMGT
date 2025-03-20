@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { env } = require("process");
-const tinyurl = require("tinyurl");
+const tinyurl = require("tinyurl-api");
 
 const leaseOrderMetadataDirectory = "./data/order-metadata";
 
@@ -34,8 +33,9 @@ class MetadataHelper {
   static async saveMetadata(order, leases) {
     const metadata = { ...metadataTemplate };
     metadata.name = order.reference;
-    const orderLink = `${env.ORDER_LINK_PREFIX}/${order.reference}`;
-    const tinyOrderLink = await tinyurl.shorten(orderLink);
+    const orderLinkPrefix = process.env.ORDER_LINK_PREFIX.replace(/\/$/, "");
+    const orderLink = `${orderLinkPrefix}/${order.reference}`;
+    const tinyOrderLink = await tinyurl(orderLink);
     metadata.description = `Lease MGT Order NFT ${order.reference} is directly linked to: ${tinyOrderLink}`;
     metadata.createdAt = order.createdAt;
     metadata.attributes.find((attr) => attr.trait_type === "Reference").value = order.reference;
