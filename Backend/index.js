@@ -1,10 +1,23 @@
 const express = require("express");
 const fs = require("fs");
+const https = require("https");
+const http = require("http");
 const LeaseService = require("./service");
 const initEnv = require("./Environment");
 const multer = require("multer");
+const path = require("path");
 const app = express();
-const port = 8080;
+const sslPort = 49152;
+const port = 8100;
+
+// Load SSL certificate and key
+const sslOptions = fs.existsSync(path.resolve(__dirname, "ssl"))
+  ? {
+      key: fs.readFileSync(path.resolve(__dirname, "ssl/privkey.pem")),
+      cert: fs.readFileSync(path.resolve(__dirname, "ssl/cert.pem")),
+      ca: [fs.readFileSync(path.resolve(__dirname, "ssl/chain.pem")), fs.readFileSync(path.resolve(__dirname, "ssl/fullchain.pem"))],
+    }
+  : null;
 
 const uploadDirectory = "./data/uploads";
 
@@ -227,6 +240,12 @@ app.put("/api/update-lease-order-nft", (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+console.log(`Server is running`);
+http.createServer(app).listen(port, () => {
+  console.log(`http://localhost:${port}`);
 });
+if (sslOptions) {
+  https.createServer(sslOptions, app).listen(sslPort, () => {
+    console.log(`https://localhost:${sslPort}`);
+  });
+}
