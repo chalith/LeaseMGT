@@ -1,0 +1,150 @@
+{
+    "info": {
+      "name": "Lease Management API",
+      "_postman_id": "12345678-1234-1234-1234-123456789012",
+      "description": "Collection for Lease Management API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+      {
+        "key": "baseUrl",
+        "value": "http://localhost:8080"
+      }
+    ],
+    "item": [
+      {
+        "name": "Get Lease Order by reference",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "{{baseUrl}}/api/lease-order/:reference",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "lease-order",
+              ":reference"
+            ],
+            "variable": [
+              {
+                "key": "reference",
+                "value": ""
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "Get all Lease Orders",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "{{baseUrl}}/api/lease-orders",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "lease-orders"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Get all Leases",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "{{baseUrl}}/api/leases",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "leases"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Get Lease Order Metadata by reference",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "{{baseUrl}}/api/lease-order-metadata/:reference",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "lease-order-metadata",
+              ":reference"
+            ],
+            "variable": [
+              {
+                "key": "reference",
+                "value": ""
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "Create Lease Order",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"title\": \"string\",\n  \"leases\": [\"string\"]\n}"
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/create-lease-order",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "create-lease-order"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Update Lease Order NFT ID",
+        "request": {
+          "method": "PUT",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"reference\": \"string\",\n  \"nftId\": \"string\"\n}"
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/update-lease-order-nft",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "update-lease-order-nft"
+            ]
+          }
+        }
+      }
+    ]
+  }
