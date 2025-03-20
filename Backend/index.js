@@ -7,8 +7,6 @@ const initEnv = require("./environment");
 const multer = require("multer");
 const path = require("path");
 const app = express();
-const sslPort = 49152;
-const port = 8100;
 
 // Load SSL certificate and key
 const sslOptions = fs.existsSync(path.resolve(__dirname, "ssl"))
@@ -22,6 +20,9 @@ const sslOptions = fs.existsSync(path.resolve(__dirname, "ssl"))
 const uploadDirectory = "./data/uploads";
 
 initEnv();
+
+const sslPort = process.env.SSL_PORT ?? 443;
+const port = process.env.NON_SSL_PORT ?? 80;
 
 const leaseService = new LeaseService();
 
