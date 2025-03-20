@@ -18,7 +18,7 @@ function initEnv() {
     }
   });
 
-  process.env = { ...process.env, ...env };
+  process.env = { ...env, ...process.env };
 }
 
 module.exports = initEnv;
