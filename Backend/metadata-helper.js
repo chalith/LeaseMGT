@@ -63,7 +63,6 @@ class MetadataHelper {
     const filepath = path.join(leaseOrderMetadataDirectory, order.reference.toString() + ".json");
     fs.mkdirSync(path.dirname(filepath), { recursive: true });
     fs.writeFileSync(filepath, JSON.stringify(metadata, null, 2), "utf8");
-    console.log("Metadata file has been written successfully.");
   }
 
   static getMetadata(reference) {
