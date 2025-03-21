@@ -48,6 +48,10 @@ class LeaseService {
     return MetadataHelper.getMetadata(reference);
   }
 
+  removeMetadata(reference) {
+    return MetadataHelper.removeMetadata(reference);
+  }
+
   updateAllLeases(updatedLeases) {
     this.leases = updatedLeases;
     this.#persistLeases();
@@ -66,7 +70,8 @@ class LeaseService {
     let deleted = null;
     if (index !== -1) {
       deleted = this.leaseOrders.splice(index, 1);
-      MetadataHelper.removeMetadata(reference);
+      this.#persistLeaseOrders();
+      this.removeMetadata(reference);
     }
     return deleted;
   }
@@ -99,9 +104,9 @@ class LeaseService {
     let updated = null;
     if (index !== -1) {
       this.leaseOrders[index] = { ...this.leaseOrders[index], ...updatedLeaseOrder };
+      this.#persistLeaseOrders();
       updated = this.leaseOrders[index];
     }
-    this.#persistLeaseOrders();
     return updated;
   }
 
@@ -110,9 +115,9 @@ class LeaseService {
     let updated = null;
     if (index !== -1) {
       this.leaseOrders[index] = { ...this.leaseOrders[index], nftId: nftId };
+      this.#persistLeaseOrders();
       updated = this.leaseOrders[index];
     }
-    this.#persistLeaseOrders();
     return updated;
   }
 
@@ -121,6 +126,7 @@ class LeaseService {
     let deleted = null;
     if (index !== -1) {
       deleted = this.leaseOrders.splice(index, 1);
+      this.#persistLeaseOrders();
     }
     return deleted;
   }

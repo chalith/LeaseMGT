@@ -63,6 +63,7 @@ class MetadataHelper {
     const filepath = path.join(leaseOrderMetadataDirectory, order.reference.toString() + ".json");
     fs.mkdirSync(path.dirname(filepath), { recursive: true });
     fs.writeFileSync(filepath, JSON.stringify(metadata, null, 2), "utf8");
+    console.log(`Metadata for order ${order.reference} has been saved.`);
   }
 
   static getMetadata(reference) {
@@ -77,7 +78,10 @@ class MetadataHelper {
 
   static removeMetadata(reference) {
     const metaDataFilePath = path.join(leaseOrderMetadataDirectory, reference + ".json");
-    if (fs.existsSync(metaDataFilePath)) fs.rmSync(metaDataFilePath);
+    if (fs.existsSync(metaDataFilePath)) {
+      fs.rmSync(metaDataFilePath, { force: true });
+      console.log(`Metadata for order ${reference} has been removed.`);
+    }
   }
 }
 
