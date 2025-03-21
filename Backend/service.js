@@ -73,7 +73,7 @@ class LeaseService {
       this.#persistLeaseOrders();
       this.removeMetadata(reference);
     }
-    return deleted;
+    return deleted[0];
   }
 
   getAllLeaseOrders() {
