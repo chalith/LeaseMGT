@@ -75,6 +75,11 @@ class MetadataHelper {
       return null;
     }
   }
+
+  static removeMetadata(reference) {
+    const metaDataFilePath = path.join(leaseOrderMetadataDirectory, reference + ".json");
+    if (fs.existsSync(metaDataFilePath)) fs.rmSync(metaDataFilePath);
+  }
 }
 
 module.exports = MetadataHelper;

@@ -61,6 +61,16 @@ class LeaseService {
     return this.leaseOrders.find((leaseOrder) => leaseOrder.reference === reference);
   }
 
+  deleteLeaseOrder(reference) {
+    const index = this.leaseOrders.findIndex((leaseOrder) => leaseOrder.reference === reference);
+    let deleted = null;
+    if (index !== -1) {
+      deleted = this.leaseOrders.splice(index, 1);
+      MetadataHelper.removeMetadata(reference);
+    }
+    return deleted;
+  }
+
   getAllLeaseOrders() {
     return this.leaseOrders;
   }

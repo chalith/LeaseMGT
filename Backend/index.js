@@ -57,6 +57,29 @@ app.get("/api/lease-order/:reference", (req, res) => {
   res.json(result);
 });
 
+// Get Lease Order by reference
+// Request: GET /api/lease-order/:reference
+// Response: 200 OK
+// {
+//   title: "string",
+//   leases: ["string"],
+//   nftId: "string",
+//   createdAt: "string"
+// }
+app.delete("/api/lease-order/:reference", (req, res) => {
+  if (!req.params.reference) {
+    res.status(400).json({ message: "Reference is required" });
+    return;
+  }
+
+  const result = leaseService.deleteLeaseOrder(req.params.reference);
+  if (!result) {
+    res.status(404).json({ message: "Lease Order not found" });
+    return;
+  }
+  res.json({ leaseOrder: result, message: "Lease Order has been deleted successfully" });
+});
+
 // Get all Lease Orders
 // Request: GET /api/lease-orders
 // Response: 200 OK
@@ -163,11 +186,11 @@ app.get("/api/lease-order-metadata/:reference", (req, res) => {
 
   try {
     const result = leaseService.getMetadata(req.params.reference);
-    res.json(result);
     if (!result) {
       res.status(404).json({ message: "Metadata not found" });
       return;
     }
+    res.json(result);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -231,11 +254,11 @@ app.put("/api/update-lease-order-nft", (req, res) => {
 
   try {
     const result = leaseService.updateLeaseOrderNftId(req.body.reference, req.body.nftId);
-    res.json({ leaseOrder: result, message: "Lease Order has been updated successfully" });
     if (!result) {
       res.status(404).json({ message: "Lease Order not found" });
       return;
     }
+    res.json({ leaseOrder: result, message: "Lease Order has been updated successfully" });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
