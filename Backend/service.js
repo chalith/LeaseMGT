@@ -120,16 +120,6 @@ class LeaseService {
     }
     return updated;
   }
-
-  deleteLeaseOrder(reference) {
-    const index = this.leaseOrders.findIndex((leaseOrder) => leaseOrder.reference === reference);
-    let deleted = null;
-    if (index !== -1) {
-      deleted = this.leaseOrders.splice(index, 1);
-      this.#persistLeaseOrders();
-    }
-    return deleted;
-  }
 }
 
 module.exports = LeaseService;
